@@ -10,7 +10,7 @@
 
 1. **Clone the repository**
    ```bash
-   git https://github.com/herdsman012/NYTimesArticleMicroserviceForBestEgg.git
+   git clone https://github.com/herdsman012/NYTimesArticleMicroserviceForBestEgg.git
    cd NYTimesArticleMicroserviceForBestEgg
    ```
 
