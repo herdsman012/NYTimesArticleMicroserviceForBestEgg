@@ -18,6 +18,16 @@ class NYTimesService:
         self.article_search_url = "https://api.nytimes.com/svc/search/v2/articlesearch.json"
 
     async def get_top_stories(self, categories: List[str], stories_per_category: int = 2) -> Tuple[List[Dict], int]:
+        """
+        Fetches top stories from multiple categories.
+
+        Args:
+            categories: List of categories to fetch stories from
+            stories_per_category: Number of stories to fetch per category
+
+        Returns:
+            Tuple of (stories list, total count)
+        """
         all_stories = []
 
         async with httpx.AsyncClient() as client:
@@ -30,6 +40,7 @@ class NYTimesService:
 
                     data = response.json()
 
+                    # Extract required fields from each story
                     category_stories = []
                     for story in data.get("results", [])[:stories_per_category]:
                         try:
@@ -59,7 +70,17 @@ class NYTimesService:
                               query: str,
                               begin_date: Optional[date] = None,
                               end_date: Optional[date] = None) -> Tuple[List[Dict], int]:
+        """
+        Searches for articles using the Article Search API.
 
+        Args:
+            query: Search term
+            begin_date: Optional start date (YYYY-MM-DD)
+            end_date: Optional end date (YYYY-MM-DD)
+
+        Returns:
+            Tuple of (articles list, total count)
+        """
         params = {
             "routes-key": self.api_key,
             "q": query,
@@ -79,6 +100,7 @@ class NYTimesService:
 
                 data = response.json()
 
+                # Process the articles to match our expected format
                 articles = []
                 for doc in data.get("response", {}).get("docs", []):
                     try:

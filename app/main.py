@@ -2,13 +2,19 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-app = FastAPI()
 from app.config import get_settings
 from app.routes.nyt_routes import router as api_router
 
 # Create FastAPI application
 settings = get_settings()
-print(settings)
+
+app = FastAPI(
+    title=settings.app_name,
+    version=settings.api_version,
+    description="A microservice for retrieving NYTimes articles",
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
 
 # Configure CORSMiddleware
 app.add_middleware(
@@ -37,6 +43,8 @@ async def root():
     """
     return {
         "message": "Welcome to the NYTimes Articles API",
+        "version": settings.api_version,
+        "docs": "/docs"
     }
 
 

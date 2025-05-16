@@ -8,9 +8,18 @@ from app.services.nyt_service import NYTimesService
 
 router = APIRouter(prefix="/nytimes", tags=["NYTimes"])
 
-
 @router.get("/topstories", response_model=TopStoriesResponse, summary="Get top stories")
 async def get_top_stories():
+    """
+    Fetches the two most recent top stories from each of the following categories:
+    - arts
+    - food
+    - movies
+    - travel
+    - science
+
+    Returns a list of top stories with their details.
+    """
     nyt_service = NYTimesService()
     categories = ["arts", "food", "movies", "travel", "science"]
 
@@ -34,6 +43,16 @@ async def search_articles(
         begin_date: Optional[date] = Query(None, description="Begin date (YYYY-MM-DD)"),
         end_date: Optional[date] = Query(None, description="End date (YYYY-MM-DD)")
 ):
+    """
+    Searches for articles using the NYTimes Article Search API.
+
+    Parameters:
+    - q: Search query term
+    - begin_date: Optional start date (YYYY-MM-DD format)
+    - end_date: Optional end date (YYYY-MM-DD format)
+
+    Returns articles matching the search criteria.
+    """
     nyt_service = NYTimesService()
 
     try:
