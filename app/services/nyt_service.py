@@ -24,7 +24,7 @@ class NYTimesService:
         for attempt in range(retries):
             resp = await client.get(url, params=params)
             if resp.status_code == 429:
-                await asyncio.sleep(3)  # backoff
+                await asyncio.sleep(2 * (attempt + 1))  # backoff
             else:
                 return resp
         raise HTTPException(status_code=503, detail="Rate limit exceeded for NYT API")

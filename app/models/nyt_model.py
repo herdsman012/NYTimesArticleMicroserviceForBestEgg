@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import date
 
@@ -9,7 +9,7 @@ class TopStory(BaseModel):
     """
     title: str
     section: str
-    url: HttpUrl
+    url: str
     abstract: str
     published_date: str
 
@@ -28,7 +28,7 @@ class Article(BaseModel):
     """
     headline: str
     snippet: str
-    web_url: HttpUrl
+    web_url: str
     pub_date: str
 
 
