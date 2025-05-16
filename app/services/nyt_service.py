@@ -4,6 +4,8 @@ from typing import Dict, List, Optional, Tuple
 import httpx
 from fastapi import HTTPException, status
 
+from app.config import *
+
 
 class NYTimesService:
     """
@@ -11,7 +13,7 @@ class NYTimesService:
     """
 
     def __init__(self):
-        self.api_key = "MY_API_KEY"  # TODO: replace api key
+        self.api_key = get_settings().nytimes_api_key
         self.top_stories_url = "https://api.nytimes.com/svc/topstories/v2/{section}.json"
         self.article_search_url = "https://api.nytimes.com/svc/search/v2/articlesearch.json"
 

@@ -5,3 +5,4 @@ __pycache__/
 .Python
 build/
 venv/
+.env
