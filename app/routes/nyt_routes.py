@@ -21,7 +21,7 @@ async def get_top_stories():
     Returns a list of top stories with their details.
     """
     nyt_service = NYTimesService()
-    categories = ["arts", "food", "movies", "travel", "science"]
+    categories = ["arts", "food", "movies", "health", "automobiles"]
 
     try:
         stories, total = await nyt_service.get_top_stories(categories)
