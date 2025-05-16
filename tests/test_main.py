@@ -30,7 +30,6 @@ def test_articlesearch():
         assert "web_url" in article
         assert "pub_date" in article
 
-
 def test_articlesearch_missing_query():
     response = client.get("/nytimes/articlesearch")
     assert response.status_code == 422  # Unprocessable Entity due to missing required parameter
