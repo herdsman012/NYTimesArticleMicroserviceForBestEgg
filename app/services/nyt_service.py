@@ -1,3 +1,4 @@
+import asyncio
 from datetime import date
 from typing import Dict, List, Optional, Tuple
 
@@ -17,6 +18,17 @@ class NYTimesService:
         self.top_stories_url = "https://api.nytimes.com/svc/topstories/v2/{section}.json"
         self.article_search_url = "https://api.nytimes.com/svc/search/v2/articlesearch.json"
 
+    MAX_RETRIES = 3
+
+    async def fetch_with_retry(self, client, url, params, retries=MAX_RETRIES):
+        for attempt in range(retries):
+            resp = await client.get(url, params=params)
+            if resp.status_code == 429:
+                await asyncio.sleep(3)  # backoff
+            else:
+                return resp
+        raise HTTPException(status_code=503, detail="Rate limit exceeded for NYT API")
+
     async def get_top_stories(self, categories: List[str], stories_per_category: int = 2) -> Tuple[List[Dict], int]:
         """
         Fetches top stories from multiple categories.
@@ -33,9 +45,11 @@ class NYTimesService:
         async with httpx.AsyncClient() as client:
             for category in categories:
                 try:
-                    params = {"routes-key": self.api_key}
+                    params = {"api-key": self.api_key}
                     url = self.top_stories_url.format(section=category)
-                    response = await client.get(url, params=params)
+                    response = await self.fetch_with_retry(client, url, params)
+                    # response = await client.get(url, params=params)
+
                     response.raise_for_status()
 
                     data = response.json()
@@ -82,7 +96,7 @@ class NYTimesService:
             Tuple of (articles list, total count)
         """
         params = {
-            "routes-key": self.api_key,
+            "api-key": self.api_key,
             "q": query,
         }
 
