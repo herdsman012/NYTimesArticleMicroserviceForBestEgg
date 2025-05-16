@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Tuple
 import httpx
 from fastapi import HTTPException, status
 
-from app.config import *
+from app.config import get_settings
 
 
 class NYTimesService:
@@ -23,7 +23,7 @@ class NYTimesService:
         async with httpx.AsyncClient() as client:
             for category in categories:
                 try:
-                    params = {"api-key": self.api_key}
+                    params = {"routes-key": self.api_key}
                     url = self.top_stories_url.format(section=category)
                     response = await client.get(url, params=params)
                     response.raise_for_status()
@@ -61,7 +61,7 @@ class NYTimesService:
                               end_date: Optional[date] = None) -> Tuple[List[Dict], int]:
 
         params = {
-            "api-key": self.api_key,
+            "routes-key": self.api_key,
             "q": query,
         }
 

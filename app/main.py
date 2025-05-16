@@ -3,6 +3,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
+from app.config import get_settings
+from app.routes.nyt_routes import router as api_router
+
+# Create FastAPI application
+settings = get_settings()
+print(settings)
 
 # Configure CORSMiddleware
 app.add_middleware(
@@ -12,6 +18,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include API routes
+app.include_router(api_router)
 
 
 # Exception handlers
