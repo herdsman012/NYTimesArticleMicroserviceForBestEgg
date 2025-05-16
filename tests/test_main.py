@@ -7,6 +7,8 @@ def test_topstories():
     response = client.get("/nytimes/topstories")
     assert response.status_code == 200
     data = response.json()
+    assert isinstance(data, dict)
+    data = data['results']
     assert isinstance(data, list)
     assert len(data) >= 10  # Expecting at least 2 stories from each of 5 categories
     for story in data:
@@ -22,6 +24,8 @@ def test_articlesearch():
     response = client.get("/nytimes/articlesearch", params=params)
     assert response.status_code == 200
     data = response.json()
+    assert isinstance(data, dict)
+    data = data['results']
     assert isinstance(data, list)
     for article in data:
         assert "headline" in article
