@@ -1,5 +1,8 @@
 # NYTimes Article Microservice
 
+<p align="center">
+<img src="imgs%2FBest_Egg_Profile_Pic.jpg" alt="YTimes Article Microservice Profile Pic" width="50%" style="border-radius: 8px;" />
+</p>
 ### Prerequisites
 
 - Python 3.12+ installed
